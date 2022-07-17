@@ -1,26 +1,14 @@
 <template>
   <div class="flow_region">
     <div class="nodes-wrap">
-      <div
-        v-for="item in nodeTypeList"
-        :key="item.type"
-        class="node"
-        draggable="true"
-        @dragstart="drag($event, item)"
-      >
+      <div v-for="item in nodeTypeList" :key="item.type" class="node" draggable="true" @dragstart="drag($event, item)">
         <div class="log">
           <img :src="item.logImg" alt="" />
         </div>
         <div class="name">{{ item.typeName }}</div>
       </div>
     </div>
-    <div
-      id="flowWrap"
-      ref="flowWrap"
-      class="flow-wrap"
-      @drop="drop($event)"
-      @dragover="allowDrop($event)"
-    >
+    <div id="flowWrap" ref="flowWrap" class="flow-wrap" @drop="drop($event)" @dragover="allowDrop($event)">
       <div id="flow">
         <div
           v-show="auxiliaryLine.isShowXLine"
@@ -51,23 +39,32 @@
         ></flowNode>
       </div>
     </div>
+    <div class="node-detail">
+      <div class="title">节点标题</div>
+      <div class="label">节点名称</div>
+      <input type="text" v-model="lineProps.value" />
+      <div class="btns">
+        <button @click="cancelLine">取消</button>
+        <button @click="saveLine">确定</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { jsPlumb } from "jsplumb";
-import { nodeTypeList } from "./config/init";
+import { jsPlumb } from 'jsplumb';
+import { nodeTypeList } from './config/init';
 import {
   jsplumbSetting,
   jsplumbConnectOptions,
   jsplumbSourceOptions,
   jsplumbTargetOptions,
-} from "./config/commonConfig";
-import methods from "./config/methods";
-import data from "./config/data.json";
-import flowNode from "./components/node-item";
+} from './config/commonConfig';
+import methods from './config/methods';
+import data from './config/data.json';
+import flowNode from './components/node-item';
 export default {
-  name: "FlowEdit",
+  name: 'FlowEdit',
   components: {
     flowNode,
   },
@@ -88,8 +85,8 @@ export default {
       jsplumbTargetOptions: jsplumbTargetOptions,
       auxiliaryLine: { isShowXLine: false, isShowYLine: false }, //对齐辅助线是否显示
       auxiliaryLinePos: {
-        width: "100%",
-        height: "100%",
+        width: '100%',
+        height: '100%',
         offsetX: 0,
         offsetY: 0,
         x: 20,
@@ -98,12 +95,23 @@ export default {
       commonGrid: [5, 5], //节点移动最小距离
       selectModuleFlag: false, //多选标识
       rectAngle: {
-        px: "", //多选框绘制时的起始点横坐标
-        py: "", //多选框绘制时的起始点纵坐标
+        px: '', //多选框绘制时的起始点横坐标
+        py: '', //多选框绘制时的起始点纵坐标
         left: 0,
         top: 0,
         height: 0,
         width: 0,
+      },
+      activeElement: {
+        type: '', //line,node
+        // 节点ID
+        nodeId: '',
+        // 连线ID
+        sourceId: '',
+        targetId: '',
+      },
+      lineProps: {
+        value: '',
       },
     };
   },
@@ -131,6 +139,21 @@ export default {
         this.data.nodeList.push(v);
       });
     },
+    saveLine() {
+      const { nodeId, sourceId, targetId } = this.activeElement;
+      var curCon = this.jsPlumb.getConnections({
+        source: sourceId,
+        target: targetId,
+      })[0];
+      curCon.setLabel(this.lineProps.value);
+      // 更新lineList数据
+      this.data.lineList.map((v) => {
+        if (v.sourceId === sourceId && v.targetId === targetId) {
+          v.label.value = this.lineProps.value;
+        }
+      });
+    },
+    cancelLine(conn) {},
   },
 };
 </script>
@@ -175,7 +198,7 @@ export default {
     overflow: hidden;
     outline: none !important;
     flex-grow: 1;
-    background-image: url("../assets/point.png");
+    background-image: url('../assets/point.png');
     #flow {
       position: relative;
       width: 100%;
@@ -191,6 +214,11 @@ export default {
         z-index: 9999;
       }
     }
+  }
+  .node-detail {
+    width: 200px;
+    height: 100%;
+    border: solid 1px #eee;
   }
 }
 </style>

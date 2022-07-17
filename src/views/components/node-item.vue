@@ -123,7 +123,7 @@ export default {
 
 <style lang="less" scoped>
 @labelColor: #409eff;
-@nodeSize: 20px;
+@nodeSize: 10px;
 @viewSize: 10px;
 .node-item {
   position: absolute;
@@ -165,7 +165,8 @@ export default {
     border-radius: 10px;
     cursor: crosshair;
     z-index: 9999;
-    background: -webkit-radial-gradient(sandybrown 10%, white 30%, #9a54ff 60%);
+    background-color: #999;  
+    // background: -webkit-radial-gradient(sandybrown 10%, white 30%, #9a54ff 60%);
   }
   .anchor-top{
     top: calc((@nodeSize / 2)*-1);

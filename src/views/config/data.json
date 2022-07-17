@@ -53,42 +53,54 @@
     {
       "from": "34v56ha2l9c000",
       "to": "5sdjugrcqhc000",
-      "label": "连线名称",
+      "label": {
+        "value": ""
+      },
       "id": "5n6pp5xqd6s000",
       "Remark": ""
     },
     {
       "from": "5sdjugrcqhc000",
       "to": "3atqi5p6oa4000",
-      "label": "连线名称",
+      "label": {
+        "value": ""
+      },
       "id": "2a0ya9j1kev400",
       "Remark": ""
     },
     {
       "from": "5sdjugrcqhc000",
       "to": "49vcu89p5q0000",
-      "label": "连线名称",
+      "label": {
+        "value": ""
+      },
       "id": "zoisvo5gpvk00",
       "Remark": ""
     },
     {
       "from": "3atqi5p6oa4000",
       "to": "1jhiilb0t2tc00",
-      "label": "连线名称",
+      "label": {
+        "value": ""
+      },
       "id": "4xkb3dju1g0000",
       "Remark": ""
     },
     {
       "from": "49vcu89p5q0000",
       "to": "1jhiilb0t2tc00",
-      "label": "连线名称",
+      "label": {
+        "value": ""
+      },
       "id": "ldc917l47w000",
       "Remark": ""
     },
     {
       "from": "1jhiilb0t2tc00",
       "to": "1ogr3wzy6zhc00",
-      "label": "连线名称",
+      "label": {
+        "value": ""
+      },
       "id": "478galw3u34000",
       "Remark": ""
     }

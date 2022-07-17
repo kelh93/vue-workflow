@@ -1,5 +1,5 @@
-import panzoom from "panzoom";
-import { GenNonDuplicateID } from "@/common/until";
+import panzoom from 'panzoom';
+import { GenNonDuplicateID } from '@/common/until';
 
 const methods = {
   init() {
@@ -7,25 +7,25 @@ const methods = {
       // 导入默认配置
       this.jsPlumb.importDefaults(this.jsplumbSetting);
       //完成连线前的校验
-      this.jsPlumb.bind("beforeDrop", (evt) => {
+      this.jsPlumb.bind('beforeDrop', (evt) => {
         let res = () => {}; //此处可以添加是否创建连接的校验， 返回 false 则不添加；
         return res;
       });
       // 连线创建成功后，维护本地数据
-      this.jsPlumb.bind("connection", (evt) => {
+      this.jsPlumb.bind('connection', (evt) => {
         this.addLine(evt);
       });
       //连线双击删除事件
-      this.jsPlumb.bind("dblclick", (conn, originalEvent) => {
+      this.jsPlumb.bind('dblclick', (conn, originalEvent) => {
         this.confirmDelLine(conn);
       });
       //断开连线后，维护本地数据
-      this.jsPlumb.bind("connectionDetached", (evt) => {
+      this.jsPlumb.bind('connectionDetached', (evt) => {
         this.deleLine(evt);
       });
       // 点击
-      this.jsPlumb.bind("click", (conn, originalEvent) => {
-        console.log("点击线条click");
+      this.jsPlumb.bind('click', (conn, originalEvent) => {
+        console.log('点击线条click');
         this.clickLine(conn);
         // this.activeElement.type = 'line'
         // this.activeElement.sourceId = conn.sourceId
@@ -56,7 +56,7 @@ const methods = {
     }
 
     // 初始化连线
-    this.jsPlumb.unbind("connection"); //取消连接事件
+    this.jsPlumb.unbind('connection'); //取消连接事件
     for (let i = 0; i < this.data.lineList.length; i++) {
       let line = this.data.lineList[i];
       this.jsPlumb.connect(
@@ -67,15 +67,15 @@ const methods = {
         this.jsplumbConnectOptions
       );
     }
-    this.jsPlumb.bind("connection", (evt) => {
+    this.jsPlumb.bind('connection', (evt) => {
       let from = evt.source.id;
       let to = evt.target.id;
       this.data.lineList.push({
         from: from,
         to: to,
-        label: "连线名称",
+        label: '连线名称',
         id: GenNonDuplicateID(8),
-        Remark: "",
+        Remark: '',
       });
     });
   },
@@ -98,11 +98,11 @@ const methods = {
     let showXLine = false,
       showYLine = false;
     this.data.nodeList.some((el) => {
-      if (el.id !== nodeId && el.left == position[0] + "px") {
+      if (el.id !== nodeId && el.left == position[0] + 'px') {
         this.auxiliaryLinePos.x = position[0] + 60;
         showYLine = true;
       }
-      if (el.id !== nodeId && el.top == position[1] + "px") {
+      if (el.id !== nodeId && el.top == position[1] + 'px') {
         this.auxiliaryLinePos.y = position[1] + 20;
         showXLine = true;
       }
@@ -113,8 +113,8 @@ const methods = {
   changeNodePosition(nodeId, pos) {
     this.data.nodeList.some((v) => {
       if (nodeId == v.id) {
-        v.left = pos[0] + "px";
-        v.top = pos[1] + "px";
+        v.left = pos[0] + 'px';
+        v.top = pos[1] + 'px';
         return true;
       } else {
         return false;
@@ -133,8 +133,8 @@ const methods = {
     var temp = {
       ...this.currentItem,
       id: GenNonDuplicateID(8),
-      top: Math.round(top / 20) * 20 + "px",
-      left: Math.round(left / 20) * 20 + "px",
+      top: Math.round(top / 20) * 20 + 'px',
+      left: Math.round(left / 20) * 20 + 'px',
     };
     this.addNode(temp);
   },
@@ -144,15 +144,15 @@ const methods = {
     this.data.lineList.push({
       from: from,
       to: to,
-      label: "连线名称",
+      label: '连线名称',
       id: GenNonDuplicateID(8),
-      Remark: "",
+      Remark: '',
     });
   },
   confirmDelLine(line) {
     this.$Modal.confirm({
-      title: "删除连线",
-      content: "<p>确认删除该连线？</p>",
+      title: '删除连线',
+      content: '<p>确认删除该连线？</p>',
       onOk: () => {
         this.jsPlumb.deleteConnection(line);
       },
@@ -175,10 +175,8 @@ const methods = {
       const { scale } = this.jsPlumb.pan.getTransform();
       scale1 = scale;
     } else {
-      const matrix = window.getComputedStyle(
-        this.jsPlumb.getContainer()
-      ).transform;
-      scale1 = matrix.split(", ")[3] * 1;
+      const matrix = window.getComputedStyle(this.jsPlumb.getContainer()).transform;
+      scale1 = matrix.split(', ')[3] * 1;
     }
     this.jsPlumb.setZoom(scale1);
     return scale1;
@@ -218,33 +216,33 @@ const methods = {
     this.jsPlumb.mainContainerWrap = mainContainerWrap;
     this.jsPlumb.pan = pan;
     // 缩放时设置jsPlumb的缩放比率
-    pan.on("zoom", (e) => {
+    pan.on('zoom', (e) => {
       const { x, y, scale } = e.getTransform();
       this.jsPlumb.setZoom(scale);
       //根据缩放比例，缩放对齐辅助线长度和位置
-      this.auxiliaryLinePos.width = (1 / scale) * 100 + "%";
-      this.auxiliaryLinePos.height = (1 / scale) * 100 + "%";
+      this.auxiliaryLinePos.width = (1 / scale) * 100 + '%';
+      this.auxiliaryLinePos.height = (1 / scale) * 100 + '%';
       this.auxiliaryLinePos.offsetX = -(x / scale);
       this.auxiliaryLinePos.offsetY = -(y / scale);
     });
-    pan.on("panend", (e) => {
+    pan.on('panend', (e) => {
       const { x, y, scale } = e.getTransform();
-      this.auxiliaryLinePos.width = (1 / scale) * 100 + "%";
-      this.auxiliaryLinePos.height = (1 / scale) * 100 + "%";
+      this.auxiliaryLinePos.width = (1 / scale) * 100 + '%';
+      this.auxiliaryLinePos.height = (1 / scale) * 100 + '%';
       this.auxiliaryLinePos.offsetX = -(x / scale);
       this.auxiliaryLinePos.offsetY = -(y / scale);
     });
 
     // 平移时设置鼠标样式
-    mainContainerWrap.style.cursor = "grab";
-    mainContainerWrap.addEventListener("mousedown", function wrapMousedown() {
-      this.style.cursor = "grabbing";
-      mainContainerWrap.addEventListener("mouseout", function wrapMouseout() {
-        this.style.cursor = "grab";
+    mainContainerWrap.style.cursor = 'grab';
+    mainContainerWrap.addEventListener('mousedown', function wrapMousedown() {
+      this.style.cursor = 'grabbing';
+      mainContainerWrap.addEventListener('mouseout', function wrapMouseout() {
+        this.style.cursor = 'grab';
       });
     });
-    mainContainerWrap.addEventListener("mouseup", function wrapMouseup() {
-      this.style.cursor = "grab";
+    mainContainerWrap.addEventListener('mouseup', function wrapMouseup() {
+      this.style.cursor = 'grab';
     });
   },
 
@@ -274,41 +272,46 @@ const methods = {
 
   // 点击连线 设置Label
   clickLine(conn) {
-    const {sourceId, targetId} = conn;
+    const { sourceId, targetId } = conn;
     // setLineLabel (from, to, label) {
     const label = conn.getLabel();
-    console.log('label');
     var curCon = this.jsPlumb.getConnections({
       source: sourceId,
       target: targetId,
     })[0];
-    if (!label || label === "") {
-      curCon.removeClass("flowLabel");
-      curCon.addClass("emptyFlowLabel");
+    if (!label || label === '') {
+      curCon.removeClass('flowLabel');
+      curCon.addClass('emptyFlowLabel');
     } else {
-      curCon.addClass("flowLabel");
+      curCon.addClass('flowLabel');
     }
-    curCon.setLabel({
-      label: 'abcdddd',
-    });
-    this.data.nodeList.forEach(function (line) {
+    this.activeElement.type = 'line';
+    this.activeElement.nodeId = conn.id;
+    this.activeElement.sourceId = sourceId;
+    this.activeElement.targetId = targetId;
+    // curCon.setLabel({
+    //   label: '<div class="line-label"><span class="label-text">业务类型</span></div>',
+    // });
+    this.data.lineList.forEach((line) => {
       if (line.from == sourceId && line.to == targetId) {
-        line.label = label;
+        console.log('lineProps', this);
+        this.lineProps.value = line.label.value;
+        console.log('line', line.label);
       }
     });
     // },
   },
 
-  //更改连线状态
+  //更改连线状态,连接线动画
   changeLineState(nodeId, val) {
     console.log(val);
     let lines = this.jsPlumb.getAllConnections();
     lines.forEach((line) => {
       if (line.targetId === nodeId || line.sourceId === nodeId) {
         if (val) {
-          line.canvas.classList.add("active");
+          line.canvas.classList.add('active');
         } else {
-          line.canvas.classList.remove("active");
+          line.canvas.classList.remove('active');
         }
       }
     });
@@ -345,20 +348,14 @@ const methods = {
       nodePoint.top = minTop;
       nodePoint.bottom = wrapInfo.height - maxTop - nodeHeight;
 
-      fixTop =
-        nodePoint.top !== nodePoint.bottom
-          ? (nodePoint.bottom - nodePoint.top) / 2
-          : 0;
-      fixLeft =
-        nodePoint.left !== nodePoint.right
-          ? (nodePoint.right - nodePoint.left) / 2
-          : 0;
+      fixTop = nodePoint.top !== nodePoint.bottom ? (nodePoint.bottom - nodePoint.top) / 2 : 0;
+      fixLeft = nodePoint.left !== nodePoint.right ? (nodePoint.right - nodePoint.left) / 2 : 0;
 
       this.data.nodeList.map((el) => {
         let top = Number(el.top.substring(0, el.top.length - 2)) + fixTop;
         let left = Number(el.left.substring(0, el.left.length - 2)) + fixLeft;
-        el.top = Math.round(top / 20) * 20 + "px";
-        el.left = Math.round(left / 20) * 20 + "px";
+        el.top = Math.round(top / 20) * 20 + 'px';
+        el.left = Math.round(left / 20) * 20 + 'px';
       });
     }
   },
